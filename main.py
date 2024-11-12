@@ -1,13 +1,7 @@
 import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
 
-pip install matplotlib
-streamlit run macro_tracker.py
-
-
-
-# Step 1: Define 10 food items with their macros per serving
+# Step 1: Define food items and their macros per serving
 food_items = {
     'Chicken Breast': {'protein': 30, 'carbs': 0, 'fat': 3},
     'Rice': {'protein': 2, 'carbs': 45, 'fat': 0},
@@ -21,18 +15,18 @@ food_items = {
     'Tofu': {'protein': 8, 'carbs': 2, 'fat': 4}
 }
 
-# Collect servings for each food item from the user
-st.title("Daily Macro Tracker")
+# Title of the app
+st.title("Health Universe Macro Tracker")
 st.write("Select the food items you ate today and enter the number of servings.")
 
-# Input servings for each item
+# Step 2: Collect servings for each item
 daily_intake = {}
 for food, macros in food_items.items():
     servings = st.number_input(f"Servings of {food}", min_value=0.0, max_value=10.0, step=0.1, value=0.0)
     if servings > 0:
         daily_intake[food] = servings
 
-# Step 2: Calculate the total macros
+# Step 3: Calculate the total macros
 total_macros = {'protein': 0, 'carbs': 0, 'fat': 0}
 for food, servings in daily_intake.items():
     total_macros['protein'] += food_items[food]['protein'] * servings
@@ -45,7 +39,7 @@ st.write(f"Protein: {total_macros['protein']}g")
 st.write(f"Carbohydrates: {total_macros['carbs']}g")
 st.write(f"Fat: {total_macros['fat']}g")
 
-# Step 3: Generate a pie chart
+# Step 4: Generate a pie chart
 labels = list(total_macros.keys())
 values = list(total_macros.values())
 
@@ -56,7 +50,7 @@ ax.set_title("Macro Breakdown")
 # Display chart
 st.pyplot(fig)
 
-# Step 4: Provide recommendations
+# Step 5: Provide recommendations
 st.write("### Recommendations for a Balanced Meal")
 protein_target = 50  # Example target; adjust based on dietary guidelines
 carb_target = 200    # Example target
