@@ -66,19 +66,12 @@ def step_1_select_college():
     st.write("### Bentley's Menu")
     
     # Attempt to create DataFrame by concatenating separate DataFrames
-    try:
-        food_df = pd.DataFrame({'Food Item': menu_data['Food Item']})
-        calories_df = pd.DataFrame({'Calories': menu_data['Calories']})
-        protein_df = pd.DataFrame({'Protein (g)': menu_data['Protein (g)']})
-        carbs_df = pd.DataFrame({'Carbs (g)': menu_data['Carbs (g)']})
-        fat_df = pd.DataFrame({'Fat (g)': menu_data['Fat (g)']})
-        
-        menu_df = pd.concat([food_df, calories_df, protein_df, carbs_df, fat_df], axis=1)
-        
-        st.write("DataFrame created successfully!")
-        st.write(menu_df)
-    except ValueError as e:
-        st.write(f"Error creating DataFrame: {e}")
+   try:
+    menu_df = pd.DataFrame(menu_data)
+    st.write("DataFrame created successfully!")
+    st.write(menu_df)
+except ValueError as e:
+    st.write(f"Error creating DataFrame: {e}")
 
     if st.button("Next"):
         st.session_state["step"] = 2
@@ -136,7 +129,7 @@ def select_meals(menu_df, target):
         item = menu_df.sample(1)
         selected_items = pd.concat([selected_items, item])
         for n in target:
-            nutrients[n] += item[n].values[0]
+            nutrients[n] += item[n].iloc[0]
     return selected_items
 
 def calculate_totals(selected_items):
