@@ -60,7 +60,7 @@ elif st.session_state["step"] == 2:
     if st.button("Next"):
         next_step()
 
-# Step 3: Sample Menu Customization
+# Step 3: Custom Meal Plan
 elif st.session_state["step"] == 3:
     st.title("Step 3: Customize Your Meal Plan")
 
@@ -69,11 +69,12 @@ elif st.session_state["step"] == 3:
     st.write(f"**{st.session_state['user_data']['college']} Menu**")
     st.write(menu_df)
 
-    # Sample meal customization
+    # Custom meal plan selection for each meal
+    st.write("**Select items for each meal:**")
     st.session_state["user_data"]["meal_plan"] = {
-        "Breakfast": st.multiselect("Select items for Breakfast", options=menu_df['Food Item'].tolist()),
-        "Lunch": st.multiselect("Select items for Lunch", options=menu_df['Food Item'].tolist()),
-        "Dinner": st.multiselect("Select items for Dinner", options=menu_df['Food Item'].tolist())
+        "Breakfast": st.multiselect("Breakfast", options=menu_df['Food Item'].tolist()),
+        "Lunch": st.multiselect("Lunch", options=menu_df['Food Item'].tolist()),
+        "Dinner": st.multiselect("Dinner", options=menu_df['Food Item'].tolist())
     }
 
     if st.button("Previous"):
@@ -85,7 +86,7 @@ elif st.session_state["step"] == 3:
 elif st.session_state["step"] == 4:
     st.title("Step 4: Nutritional Analysis and Recommendations")
 
-    # Calculate total macros and calories
+    # Calculate total macros and calories for the meal plan
     meal_plan = st.session_state["user_data"]["meal_plan"]
     menu_df = menus[st.session_state["user_data"]["college"]]
     daily_totals = {'Protein': 0, 'Carbs': 0, 'Fat': 0, 'Calories': 0}
@@ -111,7 +112,11 @@ elif st.session_state["step"] == 4:
     st.write(f"**Daily Nutritional Totals**")
     target_macros = {"Gain Weight": {"Protein": 120, "Carbs": 300, "Fat": 80, "Calories": 2800},
                      "Lose Weight": {"Protein": 100, "Carbs": 150, "Fat": 50, "Calories": 1800},
-                     # Add other goals here
+                     "Gain Muscle": {"Protein": 140, "Carbs": 250, "Fat": 70, "Calories": 2500},
+                     "Lose Muscle": {"Protein": 80, "Carbs": 200, "Fat": 60, "Calories": 2000},
+                     "Tone": {"Protein": 100, "Carbs": 200, "Fat": 60, "Calories": 2200},
+                     "More Vitamins": {"Protein": 80, "Carbs": 180, "Fat": 55, "Calories": 2000},
+                     "Healthier Gut": {"Protein": 90, "Carbs": 220, "Fat": 65, "Calories": 2100}
                     }
     target = target_macros.get(st.session_state["user_data"]["goal"], {"Protein": 100, "Carbs": 200, "Fat": 60, "Calories": 2000})
 
