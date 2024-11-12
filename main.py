@@ -2,6 +2,11 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
+pip install matplotlib
+streamlit run macro_tracker.py
+
+
+
 # Step 1: Define 10 food items with their macros per serving
 food_items = {
     'Chicken Breast': {'protein': 30, 'carbs': 0, 'fat': 3},
