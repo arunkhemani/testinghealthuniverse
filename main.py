@@ -1,72 +1,61 @@
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 
-# Step 1: Define Bentley University's Dining menu items and their macros per serving
-food_items = {
-    'Grilled Chicken Breast': {'protein': 30, 'carbs': 0, 'fat': 3},
-    'Brown Rice': {'protein': 2, 'carbs': 45, 'fat': 1},
-    'Steamed Broccoli': {'protein': 2, 'carbs': 7, 'fat': 0.5},
-    'Caesar Salad': {'protein': 5, 'carbs': 12, 'fat': 10},
-    'Apple': {'protein': 0, 'carbs': 25, 'fat': 0.3},
-    'Scrambled Eggs': {'protein': 12, 'carbs': 1, 'fat': 9},
-    'Salmon Fillet': {'protein': 25, 'carbs': 0, 'fat': 13},
-    'Greek Yogurt': {'protein': 10, 'carbs': 15, 'fat': 5},
-    'Roasted Sweet Potatoes': {'protein': 2, 'carbs': 27, 'fat': 0.1},
-    'Tofu Stir-Fry': {'protein': 8, 'carbs': 20, 'fat': 4}
+# Step 1: Define a sample menu with items and key nutritional values
+menu_data = {
+    'Food Item': [
+        'Grilled Chicken Breast', 'Brown Rice', 'Steamed Broccoli', 'Caesar Salad',
+        'Apple', 'Scrambled Eggs', 'Salmon Fillet', 'Greek Yogurt', 'Roasted Sweet Potatoes', 'Tofu Stir-Fry'
+    ],
+    'Protein (g)': [30, 2, 2, 5, 0, 12, 25, 10, 2, 8],
+    'Carbs (g)': [0, 45, 7, 12, 25, 1, 0, 15, 27, 20],
+    'Fat (g)': [3, 1, 0.5, 10, 0.3, 9, 13, 5, 0.1, 4],
+    'Fiber (g)': [0, 3.5, 2.4, 1.2, 4.4, 0, 0, 0, 4, 1.8],
+    'Vitamins': ['B6, B12', 'B, E', 'C, K', 'A, C', 'C', 'B12, D', 'D, B12', 'B, D', 'A, C', 'B, C']
 }
 
+menu_df = pd.DataFrame(menu_data)
+
 # Title of the app
-st.title("Bentley University Dining Macro Tracker")
-st.write("Select the food items you ate today and enter the number of servings.")
+st.title("Bentley University Dining Menu Picker")
 
-# Step 2: Collect servings for each item
-daily_intake = {}
-for food, macros in food_items.items():
-    servings = st.number_input(f"Servings of {food}", min_value=0.0, max_value=10.0, step=0.1, value=0.0)
-    if servings > 0:
-        daily_intake[food] = servings
-
-# Step 3: Calculate the total macros
-total_macros = {'protein': 0, 'carbs': 0, 'fat': 0}
-for food, servings in daily_intake.items():
-    total_macros['protein'] += food_items[food]['protein'] * servings
-    total_macros['carbs'] += food_items[food]['carbs'] * servings
-    total_macros['fat'] += food_items[food]['fat'] * servings
-
-# Display total macro breakdown
-st.write("### Today's Macro Breakdown")
-st.write(f"Protein: {total_macros['protein']}g")
-st.write(f"Carbohydrates: {total_macros['carbs']}g")
-st.write(f"Fat: {total_macros['fat']}g")
-
-# Step 4: Generate a pie chart for macros using Plotly
-labels = list(total_macros.keys())
-values = list(total_macros.values())
-
-fig = px.pie(
-    names=labels, 
-    values=values, 
-    title="Macro Breakdown",
-    hole=0.3
+# Step 2: User selects nutritional goals
+st.write("### Select Your Nutritional Goals")
+nutritional_goals = st.multiselect(
+    "Choose up to 3 nutritional factors to optimize for:",
+    options=['Protein', 'Carbs', 'Fat', 'Fiber', 'Vitamins']
 )
 
-st.plotly_chart(fig)
+# Step 3: Filter menu items based on selected nutritional goals
+st.write("### Recommended Food Items")
 
-# Step 5: Provide more specific recommendations for a balanced meal
-protein_target = 50  # Example target; adjust based on dietary guidelines
-carb_target = 200    # Example target
-fat_target = 70      # Example target
+# Function to suggest foods based on goals
+def recommend_foods(df, goals):
+    recommendations = pd.DataFrame()
+    for goal in goals:
+        if goal in df.columns:
+            recommendations = pd.concat([recommendations, df.nlargest(3, f"{goal} (g)")], axis=0)
+        elif goal == "Vitamins":
+            # Example filter for vitamin-rich foods
+            recommendations = pd.concat([recommendations, df[df['Vitamins'].str.contains('C')]], axis=0)
+    return recommendations.drop_duplicates().reset_index(drop=True)
 
-recommendations = []
-if total_macros['protein'] < protein_target:
-    recommendations.append("Consider adding high-protein options like Grilled Chicken or Salmon to boost your protein intake.")
-if total_macros['carbs'] < carb_target:
-    recommendations.append("Consider adding more carbohydrates such as Brown Rice or Roasted Sweet Potatoes for sustained energy.")
-if total_macros['fat'] < fat_target:
-    recommendations.append("Consider healthy fats like Greek Yogurt or Caesar Salad to reach your fat target.")
-
-if recommendations:
-    st.write("### Meal Recommendations")
-    st.write("\n".join(recommendations))
+# Show recommendations
+recommendations_df = recommend_foods(menu_df, nutritional_goals)
+if not recommendations_df.empty:
+    st.write(recommendations_df[['Food Item'] + [f"{goal} (g)" for goal in nutritional_goals if goal != "Vitamins"] + ['Vitamins']])
 else:
-    st.write("Great job! You've achieved a balanced macro intake for today.")
+    st.write("Select at least one nutritional factor to get recommendations.")
+
+# Step 4: Display Pie Chart for Chosen Nutritional Goals
+if not recommendations_df.empty:
+    st.write("### Nutritional Breakdown of Recommended Foods")
+    nutrients_total = recommendations_df[[f"{goal} (g)" for goal in nutritional_goals if goal != "Vitamins"]].sum()
+    fig = px.pie(
+        values=nutrients_total,
+        names=nutrients_total.index,
+        title="Nutritional Breakdown",
+        hole=0.3
+    )
+    st.plotly_chart(fig)
