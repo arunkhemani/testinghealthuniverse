@@ -57,6 +57,7 @@ menu_data = {
     ]
 }
 
+
 # Convert menu data to a DataFrame
 menu_df = pd.DataFrame(menu_data)
 
