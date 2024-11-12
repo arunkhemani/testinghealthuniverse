@@ -12,7 +12,6 @@ sample_menu_data = {
 }
 
 # Convert menu data to a DataFrame
-menu_df = pd.DataFrame(menu_data)
 
 # Step 1: Select college and display menu
 def step_1_select_college():
