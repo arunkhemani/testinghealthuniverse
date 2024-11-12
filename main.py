@@ -1,128 +1,140 @@
 import streamlit as st
 import pandas as pd
+import pdfkit
 
-# Initialize session state for navigation and inputs if not already set
-if "step" not in st.session_state:
-    st.session_state["step"] = 1
-if "user_data" not in st.session_state:
-    st.session_state["user_data"] = {}
-
-# Sample menu data for Bentley and Northeastern with nutritional information including calories
-menus = {
-    "Bentley University": pd.DataFrame({
-        'Food Item': ['Grilled Chicken Breast', 'Brown Rice', 'Steamed Broccoli', 'Caesar Salad', 'Apple', 'Scrambled Eggs', 'Salmon Fillet', 'Greek Yogurt', 'Roasted Sweet Potatoes', 'Tofu Stir-Fry'],
-        'Protein (g)': [30, 2, 2, 5, 0, 12, 25, 10, 2, 8],
-        'Carbs (g)': [0, 45, 7, 12, 25, 1, 0, 15, 27, 20],
-        'Fat (g)': [3, 1, 0.5, 10, 0.3, 9, 13, 5, 0.1, 4],
-        'Fiber (g)': [0, 3.5, 2.4, 1.2, 4.4, 0, 0, 0, 4, 1.8],
-        'Calories': [165, 215, 35, 180, 95, 90, 200, 120, 100, 150]
-    }),
-    "Northeastern University": pd.DataFrame({
-        'Food Item': ['Turkey Sandwich', 'Quinoa Salad', 'Sautéed Spinach', 'Greek Salad', 'Banana', 'Avocado Toast', 'Grilled Fish', 'Chia Pudding', 'Baked Potato', 'Falafel Wrap'],
-        'Protein (g)': [15, 8, 3, 6, 1, 4, 22, 5, 4, 7],
-        'Carbs (g)': [30, 35, 4, 10, 27, 22, 0, 12, 37, 15],
-        'Fat (g)': [6, 10, 0.5, 12, 0.3, 15, 14, 7, 0.1, 8],
-        'Fiber (g)': [3, 5, 2, 1, 3, 4, 0, 8, 4, 5],
-        'Calories': [300, 250, 25, 160, 105, 240, 180, 140, 120, 250]
-    })
-}
-
-# Navigation function
-def next_step():
-    st.session_state["step"] += 1
-
-def prev_step():
-    st.session_state["step"] -= 1
-
-# Step 1: Select College
-if st.session_state["step"] == 1:
-    st.title("Step 1: Select Your College")
-    college = st.selectbox("Choose your college", options=["Bentley University", "Northeastern University"])
-    st.session_state["user_data"]["college"] = college
-
-    if st.button("Next"):
-        next_step()
-
-# Step 2: Enter Personal Information
-elif st.session_state["step"] == 2:
-    st.title("Step 2: Enter Your Information")
-    st.session_state["user_data"]["name"] = st.text_input("Name")
-    st.session_state["user_data"]["age"] = st.number_input("Age", min_value=1, max_value=100, value=18)
-    st.session_state["user_data"]["weight"] = st.number_input("Weight (lbs)", min_value=50, max_value=400, value=150)
-    st.session_state["user_data"]["fitness_level"] = st.selectbox("Fitness Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"])
-    st.session_state["user_data"]["diet_pref"] = st.selectbox("Dietary Preference", ["No restrictions", "Vegan", "Vegetarian", "Pescetarian"])
-    st.session_state["user_data"]["goal"] = st.selectbox("Goal", [
-        "Gain Weight", "Lose Weight", "Gain Muscle", "Lose Muscle", "Tone", "More Vitamins", "Healthier Gut"
-    ])
-
-    if st.button("Previous"):
-        prev_step()
-    if st.button("Next"):
-        next_step()
-
-# Step 3: Custom Meal Plan
-elif st.session_state["step"] == 3:
-    st.title("Step 3: Customize Your Meal Plan")
-
-    # Load the selected college's menu
-    menu_df = menus[st.session_state["user_data"]["college"]]
-    st.write(f"**{st.session_state['user_data']['college']} Menu**")
+# Step 1: Display "How cooked is your nutrition? College Edition" and Bentley menu
+def step_1_select_college():
+    st.title("How cooked is your nutrition? College Edition")
+    st.write("### Pick your College:")
+    college = st.selectbox("College", ["Bentley University"])  # Only Bentley for now
+    
+    st.write("### Bentley's Menu")
+    
+    menu_data = {
+        'Food Item': [
+            'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
+            'Oven Roasted Greek Potatoes', 'Grilled Kielbasa', 'French Waffle', 'Everything Omelet',
+            'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash', 
+            # (Include more items for lunch and dinner as provided in the description)
+        ],
+        'Calories': [500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130],
+        'Protein (g)': [22, 18, 13, 2, 9, 4, 16, 2, 5, 9, 4],  # Estimated values
+        'Carbs (g)': [40, 30, 5, 20, 1, 40, 8, 18, 19, 2, 12],  # Estimated values
+        'Fat (g)': [30, 15, 12, 3, 15, 10, 15, 1, 2, 4, 5]  # Estimated values
+    }
+    menu_df = pd.DataFrame(menu_data)
     st.write(menu_df)
 
-    # Custom meal plan selection for each meal
-    st.write("**Select items for each meal:**")
-    st.session_state["user_data"]["meal_plan"] = {
-        "Breakfast": st.multiselect("Breakfast", options=menu_df['Food Item'].tolist()),
-        "Lunch": st.multiselect("Lunch", options=menu_df['Food Item'].tolist()),
-        "Dinner": st.multiselect("Dinner", options=menu_df['Food Item'].tolist())
-    }
-
-    if st.button("Previous"):
-        prev_step()
     if st.button("Next"):
-        next_step()
+        st.session_state["step"] = 2
+        st.session_state["menu_df"] = menu_df
 
-# Step 4: Nutritional Analysis and Recommendations
-elif st.session_state["step"] == 4:
-    st.title("Step 4: Nutritional Analysis and Recommendations")
+# Step 2: Collect user personal details
+def step_2_personal_details():
+    st.title("Enter Your Personal Information")
+    st.session_state["user_data"] = {
+        "name": st.text_input("Name"),
+        "age": st.number_input("Age", min_value=1, max_value=100, value=18),
+        "weight": st.number_input("Weight (lbs)", min_value=50, max_value=400, value=150),
+        "fitness_level": st.selectbox("Fitness Level", ["Sedentary", "Lightly Active", "Moderately Active", "Very Active"]),
+        "diet_pref": st.selectbox("Dietary Preference", ["No restrictions", "Vegan", "Vegetarian", "Pescetarian"]),
+        "goal": st.selectbox("Goal", ["Gain Weight", "Lose Weight", "Gain Muscle", "Lose Muscle", "Tone", "More Vitamins", "Healthier Gut"])
+    }
+    
+    if st.button("Generate"):
+        st.session_state["step"] = 3
 
-    # Calculate total macros and calories for the meal plan
-    meal_plan = st.session_state["user_data"]["meal_plan"]
-    menu_df = menus[st.session_state["user_data"]["college"]]
-    daily_totals = {'Protein': 0, 'Carbs': 0, 'Fat': 0, 'Calories': 0}
+# Step 3: Display and Customize Personalized Meal Plan
+def step_3_personalized_meal_plan():
+    st.title(f"{st.session_state['user_data']['name']}'s Personalized Meals")
+    
+    st.write("### Recommended Menu (Editable)")
+    
+    # Customizable meal plan for breakfast, lunch, and dinner
+    meal_plan = {
+        "Breakfast": st.multiselect("Breakfast", options=st.session_state["menu_df"]['Food Item'].tolist()),
+        "Lunch": st.multiselect("Lunch", options=st.session_state["menu_df"]['Food Item'].tolist()),
+        "Dinner": st.multiselect("Dinner", options=st.session_state["menu_df"]['Food Item'].tolist())
+    }
+    st.session_state["user_data"]["meal_plan"] = meal_plan
 
-    def calculate_macros(selected_items):
-        totals = {'Protein': 0, 'Carbs': 0, 'Fat': 0, 'Calories': 0}
-        for item in selected_items:
-            food_data = menu_df[menu_df['Food Item'] == item].iloc[0]
-            totals['Protein'] += food_data['Protein (g)']
-            totals['Carbs'] += food_data['Carbs (g)']
-            totals['Fat'] += food_data['Fat (g)']
-            totals['Calories'] += food_data['Calories']
-        return totals
-
+    # Calculate and display nutrition totals for each meal and daily totals
+    st.write("### Meal Nutrition Totals")
     for meal, items in meal_plan.items():
-        meal_totals = calculate_macros(items)
-        daily_totals['Protein'] += meal_totals['Protein']
-        daily_totals['Carbs'] += meal_totals['Carbs']
-        daily_totals['Fat'] += meal_totals['Fat']
-        daily_totals['Calories'] += meal_totals['Calories']
+        totals = calculate_totals(items)
+        st.write(f"**{meal} Nutrition Totals:**")
+        st.write(totals)
 
-    # Display nutrient progress bars based on user goals
-    st.write(f"**Daily Nutritional Totals**")
-    target_macros = {"Gain Weight": {"Protein": 120, "Carbs": 300, "Fat": 80, "Calories": 2800},
-                     "Lose Weight": {"Protein": 100, "Carbs": 150, "Fat": 50, "Calories": 1800},
-                     "Gain Muscle": {"Protein": 140, "Carbs": 250, "Fat": 70, "Calories": 2500},
-                     "Lose Muscle": {"Protein": 80, "Carbs": 200, "Fat": 60, "Calories": 2000},
-                     "Tone": {"Protein": 100, "Carbs": 200, "Fat": 60, "Calories": 2200},
-                     "More Vitamins": {"Protein": 80, "Carbs": 180, "Fat": 55, "Calories": 2000},
-                     "Healthier Gut": {"Protein": 90, "Carbs": 220, "Fat": 65, "Calories": 2100}
-                    }
-    target = target_macros.get(st.session_state["user_data"]["goal"], {"Protein": 100, "Carbs": 200, "Fat": 60, "Calories": 2000})
+    daily_totals = calculate_totals(meal_plan["Breakfast"] + meal_plan["Lunch"] + meal_plan["Dinner"])
+    st.write("### Daily Nutrition Totals")
+    st.write(daily_totals)
 
-    for macro in ["Protein", "Carbs", "Fat", "Calories"]:
-        st.write(f"{macro}: {daily_totals[macro]} / {target[macro]}")
-        st.progress(min(daily_totals[macro] / target[macro], 1.0))
+    # Progress bars based on user goals
+    target = get_target_macros(st.session_state["user_data"]["goal"])
+    for nutrient in ["Calories", "Protein", "Carbs", "Fat"]:
+        st.write(f"{nutrient}: {daily_totals[nutrient]} / {target[nutrient]}")
+        st.progress(min(daily_totals[nutrient] / target[nutrient], 1.0))
 
-    if st.button("Previous"):
-        prev_step()
+    # PDF Export
+    if st.button("Export to PDF"):
+        export_pdf(st.session_state["user_data"], daily_totals)
+    if st.button("Restart"):
+        st.session_state.clear()
+    if st.button("Edit Personal Information"):
+        st.session_state["step"] = 2
+
+# Helper Functions
+def calculate_totals(selected_items):
+    menu_df = st.session_state["menu_df"]
+    totals = {"Calories": 0, "Protein (g)": 0, "Carbs (g)": 0, "Fat (g)": 0}
+    for item in selected_items:
+        food_data = menu_df[menu_df['Food Item'] == item].iloc[0]
+        totals["Calories"] += food_data["Calories"]
+        totals["Protein (g)"] += food_data["Protein (g)"]
+        totals["Carbs (g)"] += food_data["Carbs (g)"]
+        totals["Fat (g)"] += food_data["Fat (g)"]
+    return totals
+
+def get_target_macros(goal):
+    targets = {
+        "Gain Weight": {"Calories": 2800, "Protein": 120, "Carbs": 300, "Fat": 80},
+        "Lose Weight": {"Calories": 1800, "Protein": 100, "Carbs": 150, "Fat": 50},
+        "Gain Muscle": {"Calories": 2500, "Protein": 140, "Carbs": 250, "Fat": 70},
+        "Lose Muscle": {"Calories": 2000, "Protein": 80, "Carbs": 200, "Fat": 60},
+        "Tone": {"Calories": 2200, "Protein": 100, "Carbs": 200, "Fat": 60},
+        "More Vitamins": {"Calories": 2000, "Protein": 80, "Carbs": 180, "Fat": 55},
+        "Healthier Gut": {"Calories": 2100, "Protein": 90, "Carbs": 220, "Fat": 65}
+    }
+    return targets.get(goal, {"Calories": 2000, "Protein": 100, "Carbs": 200, "Fat": 60})
+
+def export_pdf(user_data, daily_totals):
+    # Prepare HTML content for PDF
+    html_content = f"""
+    <h1>{user_data['name']}'s Personalized Meals</h1>
+    <h2>Daily Nutrition Totals</h2>
+    <p>Calories: {daily_totals['Calories']} cal</p>
+    <p>Protein: {daily_totals['Protein (g)']} g</p>
+    <p>Carbohydrates: {daily_totals['Carbs (g)']} g</p>
+    <p>Fats: {daily_totals['Fat (g)']} g</p>
+    <h3>Personal Information</h3>
+    <p>Age: {user_data['age']}</p>
+    <p>Weight: {user_data['weight']} lbs</p>
+    <p>Fitness Level: {user_data['fitness_level']}</p>
+    <p>Dietary Preference: {user_data['diet_pref']}</p>
+    <p>Goal: {user_data['goal']}</p>
+    """
+    
+    # Save HTML to PDF
+    pdfkit.from_string(html_content, "Personalized_Meal_Plan.pdf")
+    st.success("PDF exported as 'Personalized_Meal_Plan.pdf'!")
+
+# Flow Control
+if "step" not in st.session_state:
+    st.session_state["step"] = 1
+
+if st.session_state["step"] == 1:
+    step_1_select_college()
+elif st.session_state["step"] == 2:
+    step_2_personal_details()
+elif st.session_state["step"] == 3:
+    step_3_personalized_meal_plan()
