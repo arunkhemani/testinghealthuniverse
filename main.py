@@ -57,6 +57,7 @@ menu_data = {
     ]
 }
 
+
 # Step 1: Select college and display menu
 def step_1_select_college():
     st.title("How cooked is your nutrition? College Edition")
