@@ -35,7 +35,7 @@ def step_1_select_college():
         'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad', 'Mexican Brown Rice', 
         'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean', 'Simple Vegetable Polenta And Tomato Coulis', 
         'Three Bean Salad', 'Orange Angel Cupcake', 'Tapioca Pudding', 'Mediterranean Mixed Greens', 
-        'Lemon Tahini Dressing', 'Plain Cooked Farro'
+        'Lemon Tahini Dressing', 'Plain Cooked Farro', 'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Beef Top Round Machaca', 'Jasmine Rice', 'Simple Grilled Fresh Cod'
     ],
     'Calories': [
         500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130, 290, 100, 100, 110, 25, 100, 260, 40,
