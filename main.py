@@ -5,58 +5,42 @@ import random
 # Provided menu_data with confirmed lengths of 96 items each
 menu_data = {
     'Food Item': [
-        'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
+        'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs',
         'Oven Roasted Greek Potatoes', 'Grilled Kielbasa', 'French Waffle', 'Everything Omelet',
-        'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash', 'Chocolate Strawberry Chia Seed Pudding', 
-        'Strawberry Banana Smoothie', 'Mango Banana Smoothie', 'Mango Pineapple Smoothie', 'Fresh Melons, Strawberries & Grapes', 
-        'Scrambled Vegan Egg Substitute', 'Shredded Hash Browns', 'Roasted Carrots', 'Steamed Italian Vegetable Medley', 
-        'Rosemary Grilled Pork Chop', 'Steamed Broccoli', 'Simply Roasted Cauliflower', 'Lentils & Swiss Chard', 
-        'Extra Firm Tofu', 'Mashed Potatoes', 'Steamed Green Beans', 'Jasmine Rice', 'Garlic Rice', 'Beef Top Round Machaca', 
-        'Southern Style Green Beans', 'Chicken Bacon Club Loafer Sandwich', 'French Fries', 'Grilled Garlic Chicken', 
-        'Black Bean Burger', 'Hamburger On Bun', 'Cheeseburger On Bun', 'Italian Turkey And Ham Loafer Sandwich', 
-        'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Pepperoni Pizza', 'Cheese Pizza', 'Vegetable Lovers Feast Pizza', 
-        'Green Bean Casserole', 'Garlic Breadstick', 'Hot Italian Sausage Pizza', 'Country-style Potato Salad', 
-        'Latin Chipotle Quinoa Salad', 'Salsa', 'Pico De Gallo', 'Beef Tacos', 'Refried Pinto Beans', 'Sour Cream', 
-        'Mexican Brown Rice With Red Pepper', 'Charred Corn With Chili & Garlic', 'Vegetarian Sausage Crumbles', 
-        'Black Beans Frijoles Negros', 'Avocado Salsa Verde Cruda', 'Gluten Free Penne', 'Stuffed Peppers', 
-        'Spicy Slow Roasted Peppers & Onions', 'Tomato Basil Marinara', 'Old Fashioned Chicken Noodle Soup', 
-        'American Bounty Vegetable Soup', 'Two Oatmeal Raisin Cookies', 'Cinnamon Roll', 'Two Chocolate Chip Cookies', 
-        'Roasted Tandoori Cauliflower', 'Tofu Vegetable Curry', 'Simple Grilled Fresh Cod', 'Simple Baked Chicken', 
-        'Chive And Garlic Mashed Potatoes', 'Roasted Brussels Sprouts', 'Tuna Cheddar Melt', 'Alfredo Sauce', 
-        'Cavatappi Pasta', 'Marinara Sauce', 'Vegetable Lovers Feast Pizza', 'Broccoli Cheddar Ranch Pizza', 
-        'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad', 'Mexican Brown Rice', 
-        'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean', 'Simple Vegetable Polenta And Tomato Coulis', 
-        'Three Bean Salad', 'Orange Angel Cupcake', 'Tapioca Pudding', 'Mediterranean Mixed Greens', 
-        'Lemon Tahini Dressing', 'Plain Cooked Farro', 'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Beef Top Round Machaca', 
+        'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash',
+        'Chocolate Strawberry Chia Seed Pudding', 'Strawberry Banana Smoothie',
+        'Mango Banana Smoothie', 'Mango Pineapple Smoothie', 'Fresh Melons, Strawberries & Grapes',
+        'Scrambled Vegan Egg Substitute', 'Shredded Hash Browns', 'Roasted Carrots',
+        'Steamed Italian Vegetable Medley', 'Rosemary Grilled Pork Chop', 'Steamed Broccoli',
+        'Simply Roasted Cauliflower', 'Lentils & Swiss Chard', 'Extra Firm Tofu', 'Mashed Potatoes',
+        'Steamed Green Beans', 'Jasmine Rice', 'Garlic Rice', 'Beef Top Round Machaca',
+        'Southern Style Green Beans', 'Chicken Bacon Club Loafer Sandwich', 'French Fries',
+        'Grilled Garlic Chicken', 'Black Bean Burger', 'Hamburger On Bun', 'Cheeseburger On Bun',
+        'Italian Turkey And Ham Loafer Sandwich', 'Cumin Shrimp And Spicy Pinto Bean Bowl',
+        'Pepperoni Pizza', 'Cheese Pizza', 'Vegetable Lovers Feast Pizza', 'Green Bean Casserole',
+        'Garlic Breadstick', 'Hot Italian Sausage Pizza', 'Country-style Potato Salad',
+        'Latin Chipotle Quinoa Salad', 'Salsa', 'Pico De Gallo', 'Beef Tacos', 'Refried Pinto Beans',
+        'Sour Cream', 'Mexican Brown Rice With Red Pepper', 'Charred Corn With Chili & Garlic',
+        'Vegetarian Sausage Crumbles', 'Black Beans Frijoles Negros', 'Avocado Salsa Verde Cruda',
+        'Gluten Free Penne', 'Stuffed Peppers', 'Spicy Slow Roasted Peppers & Onions',
+        'Tomato Basil Marinara', 'Old Fashioned Chicken Noodle Soup',
+        'American Bounty Vegetable Soup', 'Two Oatmeal Raisin Cookies', 'Cinnamon Roll',
+        'Two Chocolate Chip Cookies', 'Roasted Tandoori Cauliflower', 'Tofu Vegetable Curry',
+        'Simple Grilled Fresh Cod', 'Simple Baked Chicken', 'Chive And Garlic Mashed Potatoes',
+        'Roasted Brussels Sprouts', 'Tuna Cheddar Melt', 'Alfredo Sauce', 'Cavatappi Pasta',
+        'Marinara Sauce', 'Vegetable Lovers Feast Pizza', 'Broccoli Cheddar Ranch Pizza',
+        'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad',
+        'Mexican Brown Rice', 'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean',
+        'Simple Vegetable Polenta And Tomato Coulis', 'Three Bean Salad', 'Orange Angel Cupcake',
+        'Tapioca Pudding', 'Mediterranean Mixed Greens', 'Lemon Tahini Dressing',
+        'Plain Cooked Farro', 'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Beef Top Round Machaca',
         'Jasmine Rice', 'Simple Grilled Fresh Cod'
     ],
-    'Calories': [
-        500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130, 290, 100, 100, 110, 25, 100, 260, 40,
-        45, 300, 10, 30, 90, 30, 70, 30, 100, 160, 140, 90, 150, 240, 200, 370, 720, 250, 250, 290, 
-        80, 160, 300, 110, 130, 10, 0, 210, 110, 30, 130, 130, 30, 70, 10, 170, 300, 60, 20, 100, 45, 
-        210, 160, 240, 230, 30, 160, 150, 10, 70, 45, 100, 30, 180, 160, 200, 370, 290, 100, 160, 330, 
-        180, 150, 160, 300, 190, 250, 110, 45, 15, 50, 60, 50, 150, 80, 100, 150, 350
-    ],
-    'Protein (g)': [
-        22, 18, 13, 2, 9, 4, 16, 2, 5, 9, 4, 8, 5, 4, 5, 1, 10, 3, 1, 5, 28, 22, 5, 4, 8, 20, 12, 6, 8, 15, 
-        13, 16, 15, 10, 18, 25, 10, 11, 9, 3, 15, 10, 3, 8, 12, 14, 7, 5, 7, 5, 4, 12, 16, 13, 20, 17, 8, 
-        5, 15, 6, 9, 12, 5, 5, 4, 3, 6, 15, 20, 18, 6, 9, 15, 4, 7, 12, 5, 7, 15, 4, 10, 15, 10, 8, 15, 20, 
-        25, 18, 12, 5, 15, 10, 6, 5, 9, 7
-    ],
-    'Carbs (g)': [
-        40, 30, 5, 20, 1, 40, 8, 18, 19, 2, 12, 35, 22, 24, 18, 10, 8, 14, 6, 12, 30, 35, 8, 5, 3, 12, 10, 
-        10, 12, 10, 10, 15, 8, 12, 5, 6, 8, 8, 6, 7, 8, 12, 5, 12, 6, 8, 8, 10, 10, 12, 4, 15, 14, 10, 8, 
-        12, 6, 10, 18, 15, 14, 9, 5, 6, 8, 7, 10, 6, 8, 5, 6, 5, 15, 6, 8, 6, 8, 7, 10, 5, 4, 5, 5, 6, 8, 
-        12, 5, 7, 8, 10, 8, 8, 6, 4, 10, 9
-    ],
-    'Fat (g)': [
-        30, 15, 12, 3, 15, 10, 15, 1, 2, 4, 5, 9, 5, 4, 3, 1, 6, 7, 0.5, 8, 10, 8, 2, 1, 1.5, 7, 6, 4, 7, 
-        9, 12, 15, 10, 8, 5, 15, 4, 6, 7, 5, 6, 3, 5, 7, 8, 9, 4, 8, 9, 8, 4, 7, 10, 12, 8, 6, 5, 6, 10, 9, 
-        6, 7, 5, 8, 12, 7, 8, 7, 6, 8, 7, 6, 7, 5, 5, 6, 6, 7, 8, 5, 9, 7, 10, 5, 6, 7, 9, 10, 5, 8, 4, 7, 
-        9, 6, 10, 7
-    ]
+    'Calories': [500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130, 290, 100, 100, 110, 25, 100, 260, 40, 45, 300, 10, 30, 90, 30, 70, 30, 100, 160, 140, 90, 150, 240, 200, 370, 720, 250, 250, 290, 80, 160, 300, 110, 130, 10, 0, 210, 110, 30, 130, 130, 30, 70, 10, 170, 300, 60, 20, 100, 45, 210, 160, 240, 230, 30, 160, 150, 10, 70, 45, 100, 30, 180, 160, 200, 370, 290, 100, 160, 330, 180, 150, 160, 300, 190, 250, 110, 45, 15, 50, 60, 50, 150, 80, 100, 150, 350],
+    'Protein (g)': [22, 18, 13, 2, 9, 4, 16, 2, 5, 9, 4, 8, 5, 4, 5, 1, 10, 3, 1, 5, 28, 22, 5, 4, 8, 20, 12, 6, 8, 15, 13, 16, 15, 10, 18, 25, 10, 11, 9, 3, 15, 10, 3, 8, 12, 14, 7, 5, 7, 5, 4, 12, 16, 13, 20, 17, 8, 5, 15, 6, 9, 12, 5, 5, 4, 3, 6, 15, 20, 18, 6, 9, 15, 4, 7, 12, 5, 7, 15, 4, 10, 15, 10, 8, 15, 20, 25, 18, 12, 5, 15, 10, 6, 5, 9, 7],
+    'Carbs (g)': [40, 30, 5, 20, 1, 40, 8, 18, 19, 2, 12, 35, 22, 24, 18, 10, 8, 14, 6, 12, 30, 35, 8, 5, 3, 12, 10, 10, 12, 10, 10, 15, 8, 12, 5, 6, 8, 8, 6, 7, 8, 12, 5, 12, 6, 8, 8, 10, 10, 12, 4, 15, 14, 10, 8, 12, 6, 10, 18, 15, 14, 9, 5, 6, 8, 7, 10, 6, 8, 5, 6, 5, 15, 6, 8, 6, 8, 7, 10, 5, 4, 5, 5, 6, 8, 12, 5, 7, 8, 10, 8, 8, 6, 4, 10, 9],
+    'Fat (g)': [30, 15, 12, 3, 15, 10, 15, 1, 2, 4, 5, 9, 5, 4, 3, 1, 6, 7, 0.5, 8, 10, 8, 2, 1, 1.5, 7, 6, 4, 7, 9, 12, 15, 10, 8, 5, 15, 4, 6, 7, 5, 6, 3, 5, 7, 8, 9, 4, 8, 9, 8, 4, 7, 10, 12, 8, 6, 5, 6, 10, 9, 6, 7, 5, 8, 12, 7, 8, 7, 6, 8, 7, 6, 7, 5, 5, 6, 6, 7, 8, 5, 9, 7, 10, 5, 6, 7, 9, 10, 5, 8, 4, 7, 9, 6, 10, 7]
 }
-
 
 # Step 1: Select college and display menu
 def step_1_select_college():
@@ -64,17 +48,24 @@ def step_1_select_college():
     st.write("### Pick your College:")
     st.selectbox("College", ["Bentley University"])  # Only Bentley for now
     st.write("### Bentley's Menu")
-    
-    # Attempt to create DataFrame by concatenating separate DataFrames
-   try:
-    menu_df = pd.DataFrame(menu_data)
-    st.write("DataFrame created successfully!")
-    st.write(menu_df)
-except ValueError as e:
-    st.write(f"Error creating DataFrame: {e}")
+
+    # Check if all lists have the same length
+    lengths = [len(v) for v in menu_data.values()]
+    if len(set(lengths)) != 1:
+        st.error(f"Error: Not all lists in menu_data have the same length. Lengths: {lengths}")
+        return
+
+    try:
+        menu_df = pd.DataFrame(menu_data)
+        st.write("DataFrame created successfully!")
+        st.write(menu_df)
+    except ValueError as e:
+        st.error(f"Error creating DataFrame: {e}")
+        return
 
     if st.button("Next"):
         st.session_state["step"] = 2
+        st.session_state["menu_df"] = menu_df
 
 # Step 2: Enter personal details
 def step_2_personal_details():
@@ -96,6 +87,11 @@ def step_3_generate_meal_plan():
     target = get_target_macros(st.session_state["user_data"]["goal"])
     st.write("### Target Macronutrients")
     st.write(target)
+
+    menu_df = st.session_state.get("menu_df")
+    if menu_df is None:
+        st.error("Error: menu_df not found in session state")
+        return
 
     meal_plan = {
         "Breakfast": select_meals(menu_df, target),
