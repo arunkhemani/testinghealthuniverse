@@ -10,39 +10,32 @@ def step_1_select_college():
     
     st.write("### Bentley's Menu")
     
-    # Full menu data with balanced lengths for all columns
+    # Corrected menu data with balanced lengths for all columns
     menu_data = {
         'Food Item': [
-            # Breakfast items
             'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
             'Oven Roasted Greek Potatoes', 'Grilled Kielbasa', 'French Waffle', 'Everything Omelet',
             'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash', 'Chocolate Strawberry Chia Seed Pudding', 
             'Strawberry Banana Smoothie', 'Mango Banana Smoothie', 'Mango Pineapple Smoothie', 'Fresh Melons, Strawberries & Grapes', 
-            'Scrambled Vegan Egg Substitute', 'Shredded Hash Browns', 'Roasted Carrots',
-
-            # Lunch items
-            'Steamed Italian Vegetable Medley', 'Rosemary Grilled Pork Chop', 'Steamed Broccoli', 
-            'Simply Roasted Cauliflower', 'Lentils & Swiss Chard', 'Extra Firm Tofu', 'Mashed Potatoes', 
-            'Steamed Green Beans', 'Jasmine Rice', 'Garlic Rice', 'Beef Top Round Machaca', 
+            'Scrambled Vegan Egg Substitute', 'Shredded Hash Browns', 'Roasted Carrots', 'Steamed Italian Vegetable Medley', 
+            'Rosemary Grilled Pork Chop', 'Steamed Broccoli', 'Simply Roasted Cauliflower', 'Lentils & Swiss Chard', 
+            'Extra Firm Tofu', 'Mashed Potatoes', 'Steamed Green Beans', 'Jasmine Rice', 'Garlic Rice', 'Beef Top Round Machaca', 
             'Southern Style Green Beans', 'Chicken Bacon Club Loafer Sandwich', 'French Fries', 'Grilled Garlic Chicken', 
             'Black Bean Burger', 'Hamburger On Bun', 'Cheeseburger On Bun', 'Italian Turkey And Ham Loafer Sandwich', 
-            'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Pepperoni Pizza', 'Cheese Pizza', 'Vegetable Lovers Feast Pizza',
+            'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Pepperoni Pizza', 'Cheese Pizza', 'Vegetable Lovers Feast Pizza', 
             'Green Bean Casserole', 'Garlic Breadstick', 'Hot Italian Sausage Pizza', 'Country-style Potato Salad', 
             'Latin Chipotle Quinoa Salad', 'Salsa', 'Pico De Gallo', 'Beef Tacos', 'Refried Pinto Beans', 'Sour Cream', 
             'Mexican Brown Rice With Red Pepper', 'Charred Corn With Chili & Garlic', 'Vegetarian Sausage Crumbles', 
             'Black Beans Frijoles Negros', 'Avocado Salsa Verde Cruda', 'Gluten Free Penne', 'Stuffed Peppers', 
             'Spicy Slow Roasted Peppers & Onions', 'Tomato Basil Marinara', 'Old Fashioned Chicken Noodle Soup', 
             'American Bounty Vegetable Soup', 'Two Oatmeal Raisin Cookies', 'Cinnamon Roll', 'Two Chocolate Chip Cookies', 
-            'Roasted Tandoori Cauliflower', 'Tofu Vegetable Curry',
-
-            # Dinner items
-            'Simple Grilled Fresh Cod', 'Simple Baked Chicken', 'Chive And Garlic Mashed Potatoes', 
-            'Roasted Brussels Sprouts', 'Tuna Cheddar Melt', 'Alfredo Sauce', 'Cavatappi Pasta', 
-            'Marinara Sauce', 'Vegetable Lovers Feast Pizza', 'Broccoli Cheddar Ranch Pizza', 
-            'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad', 
-            'Mexican Brown Rice', 'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean', 
-            'Simple Vegetable Polenta And Tomato Coulis', 'Three Bean Salad', 'Orange Angel Cupcake', 
-            'Tapioca Pudding', 'Mediterranean Mixed Greens', 'Lemon Tahini Dressing', 'Plain Cooked Farro'
+            'Roasted Tandoori Cauliflower', 'Tofu Vegetable Curry', 'Simple Grilled Fresh Cod', 'Simple Baked Chicken', 
+            'Chive And Garlic Mashed Potatoes', 'Roasted Brussels Sprouts', 'Tuna Cheddar Melt', 'Alfredo Sauce', 
+            'Cavatappi Pasta', 'Marinara Sauce', 'Vegetable Lovers Feast Pizza', 'Broccoli Cheddar Ranch Pizza', 
+            'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad', 'Mexican Brown Rice', 
+            'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean', 'Simple Vegetable Polenta And Tomato Coulis', 
+            'Three Bean Salad', 'Orange Angel Cupcake', 'Tapioca Pudding', 'Mediterranean Mixed Greens', 
+            'Lemon Tahini Dressing', 'Plain Cooked Farro'
         ],
         'Calories': [
             500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130, 290, 100, 100, 110, 25, 100, 260, 40,
@@ -111,9 +104,10 @@ def step_3_generate_meal_plan():
     st.write("### Generated Meal Plan")
     for meal, items in meal_plan.items():
         st.write(f"**{meal}**")
-        st.write(items)
+        for _, item in items.iterrows():
+            st.write(f"{item['Food Item']} - {item['Calories']} cal")
 
-    daily_totals = calculate_totals([item for meal in meal_plan.values() for item in meal["Food Item"]])
+    daily_totals = calculate_totals(pd.concat(meal_plan.values()))
     st.write("### Daily Nutrition Totals")
     st.write(daily_totals)
 
@@ -129,20 +123,17 @@ def step_3_generate_meal_plan():
 
 # Helper function to select meals based on target nutrients
 def select_meals(menu_df, target):
-    selected_items = []
+    selected_items = pd.DataFrame(columns=menu_df.columns)
     nutrients = {"Calories": 0, "Protein (g)": 0, "Carbs (g)": 0, "Fat (g)": 0}
     while any(nutrients[nutrient] < target[nutrient] for nutrient in target):
-        item = menu_df.sample(1).iloc[0]  # Randomly select an item
-        selected_items.append(item)
+        item = menu_df.sample(1)
+        selected_items = pd.concat([selected_items, item])
         for nutrient in nutrients:
-            nutrients[nutrient] += item[nutrient]
+            nutrients[nutrient] += item[nutrient].values[0]
     return selected_items
 
 def calculate_totals(selected_items):
-    totals = {"Calories": 0, "Protein (g)": 0, "Carbs (g)": 0, "Fat (g)": 0}
-    for item in selected_items:
-        for nutrient in totals:
-            totals[nutrient] += item[nutrient]
+    totals = selected_items[["Calories", "Protein (g)", "Carbs (g)", "Fat (g)"]].sum().to_dict()
     return totals
 
 def get_target_macros(goal):
