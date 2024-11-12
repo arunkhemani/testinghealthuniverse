@@ -2,7 +2,7 @@ import streamlit as st
 
 # Step 1: Define food items and their macros per serving
 food_items = {
-    'Chicken Breast': {'protein': 30, 'carbs': 0, 'fat': 3},
+    'Chicken Breasts': {'protein': 30, 'carbs': 0, 'fat': 3},
     'Rice': {'protein': 2, 'carbs': 45, 'fat': 0},
     'Broccoli': {'protein': 2, 'carbs': 7, 'fat': 0.5},
     'Almonds': {'protein': 6, 'carbs': 6, 'fat': 14},
