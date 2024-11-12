@@ -52,4 +52,11 @@ recommendations = []
 if total_macros['protein'] < protein_target:
     recommendations.append("Consider adding more protein-rich foods like chicken or tofu.")
 if total_macros['carbs'] < carb_target:
-    recommendations.append("Cons
+    recommendations.append("Consider adding more carbohydrates like rice or sweet potatoes.")
+if total_macros['fat'] < fat_target:
+    recommendations.append("Consider adding more healthy fats like almonds or salmon.")
+
+if recommendations:
+    st.write("\n".join(recommendations))
+else:
+    st.write("Great job! You've achieved a balanced macro intake for today.")
