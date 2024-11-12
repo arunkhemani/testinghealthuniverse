@@ -3,32 +3,12 @@ import pandas as pd
 import random
 
 # Provided menu data with confirmed lengths of 96 items each
-menu_data = {
-    'Food Item': [
-        'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
-        # (all other items go here)
-        'Simple Grilled Fresh Cod'
-    ],
-    'Calories': [
-        500, 300, 190, 
-        # (all other calorie values go here)
-        350
-    ],
-    'Protein (g)': [
-        22, 18, 13, 
-        # (all other protein values go here)
-        7
-    ],
-    'Carbs (g)': [
-        40, 30, 5, 
-        # (all other carbs values go here)
-        9
-    ],
-    'Fat (g)': [
-        30, 15, 12, 
-        # (all other fat values go here)
-        7
-    ]
+sample_menu_data = {
+    'Food Item': ['Sample Item 1', 'Sample Item 2', 'Sample Item 3'],
+    'Calories': [100, 200, 300],
+    'Protein (g)': [10, 20, 30],
+    'Carbs (g)': [15, 25, 35],
+    'Fat (g)': [5, 10, 15]
 }
 
 # Convert menu data to a DataFrame
