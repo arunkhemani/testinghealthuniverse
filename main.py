@@ -15,7 +15,7 @@ food_items = {
 }
 
 # Title of the app
-st.title("Health Universe Macro Tracker")
+st.title("Stop Getting Cokoed by the Dining Hall")
 st.write("Select the food items you ate today and enter the number of servings.")
 
 # Step 2: Collect servings for each item
