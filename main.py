@@ -2,16 +2,8 @@ import streamlit as st
 import pandas as pd
 import random
 
-# Step 1: Display "How cooked is your nutrition? College Edition" and Bentley menu
-def step_1_select_college():
-    st.title("How cooked is your nutrition? College Edition")
-    st.write("### Pick your College:")
-    college = st.selectbox("College", ["Bentley University"])  # Only Bentley for now
-    
-    st.write("### Bentley's Menu")
-    
-    # Corrected menu data with balanced lengths for all columns
-    menu_data = {
+# Provided menu data with confirmed lengths of 96 items each
+menu_data = {
     'Food Item': [
         'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
         'Oven Roasted Greek Potatoes', 'Grilled Kielbasa', 'French Waffle', 'Everything Omelet',
@@ -35,7 +27,8 @@ def step_1_select_college():
         'Garlic Breadstick', 'Margherita Pizza With Garlic Crust', 'Lemony Chickpea Salad', 'Mexican Brown Rice', 
         'Refried Pinto Beans', 'Beef Tacos', 'Santa Fe Black Bean', 'Simple Vegetable Polenta And Tomato Coulis', 
         'Three Bean Salad', 'Orange Angel Cupcake', 'Tapioca Pudding', 'Mediterranean Mixed Greens', 
-        'Lemon Tahini Dressing', 'Plain Cooked Farro', 'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Beef Top Round Machaca', 'Jasmine Rice', 'Simple Grilled Fresh Cod'
+        'Lemon Tahini Dressing', 'Plain Cooked Farro', 'Cumin Shrimp And Spicy Pinto Bean Bowl', 'Beef Top Round Machaca', 
+        'Jasmine Rice', 'Simple Grilled Fresh Cod'
     ],
     'Calories': [
         500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130, 290, 100, 100, 110, 25, 100, 260, 40,
@@ -64,14 +57,20 @@ def step_1_select_college():
     ]
 }
 
-    
-    menu_df = pd.DataFrame(menu_data)
-    st.session_state["menu_df"] = menu_df
+# Convert menu data to a DataFrame
+menu_df = pd.DataFrame(menu_data)
 
+# Step 1: Select college and display menu
+def step_1_select_college():
+    st.title("How cooked is your nutrition? College Edition")
+    st.write("### Pick your College:")
+    st.selectbox("College", ["Bentley University"])  # Only Bentley for now
+    st.write("### Bentley's Menu")
+    st.write(menu_df)
     if st.button("Next"):
         st.session_state["step"] = 2
 
-# Step 2: Collect user personal details
+# Step 2: Enter personal details
 def step_2_personal_details():
     st.title("Enter Your Personal Information")
     st.session_state["user_data"] = {
@@ -82,21 +81,16 @@ def step_2_personal_details():
         "diet_pref": st.selectbox("Dietary Preference", ["No restrictions", "Vegan", "Vegetarian", "Pescetarian"]),
         "goal": st.selectbox("Goal", ["Gain Weight", "Lose Weight", "Gain Muscle", "Lose Muscle", "Tone", "More Vitamins", "Healthier Gut"])
     }
-    
     if st.button("Generate"):
         st.session_state["step"] = 3
 
-# Step 3: Automatically Generate Personalized Meal Plan
+# Step 3: Generate personalized meal plan
 def step_3_generate_meal_plan():
     st.title(f"{st.session_state['user_data']['name']}'s Personalized Meal Plan")
-
-    # Get target macronutrients based on user's goal
     target = get_target_macros(st.session_state["user_data"]["goal"])
     st.write("### Target Macronutrients")
     st.write(target)
 
-    # Generate meal plan by selecting items from the menu that closely match the target
-    menu_df = st.session_state["menu_df"]
     meal_plan = {
         "Breakfast": select_meals(menu_df, target),
         "Lunch": select_meals(menu_df, target),
@@ -106,14 +100,12 @@ def step_3_generate_meal_plan():
     st.write("### Generated Meal Plan")
     for meal, items in meal_plan.items():
         st.write(f"**{meal}**")
-        for _, item in items.iterrows():
-            st.write(f"{item['Food Item']} - {item['Calories']} cal")
+        st.write(items)
 
     daily_totals = calculate_totals(pd.concat(meal_plan.values()))
     st.write("### Daily Nutrition Totals")
     st.write(daily_totals)
 
-    # Progress bars based on user goals
     for nutrient in ["Calories", "Protein (g)", "Carbs (g)", "Fat (g)"]:
         st.write(f"{nutrient}: {daily_totals[nutrient]} / {target[nutrient]}")
         st.progress(min(daily_totals[nutrient] / target[nutrient], 1.0))
@@ -123,20 +115,19 @@ def step_3_generate_meal_plan():
     if st.button("Edit Personal Information"):
         st.session_state["step"] = 2
 
-# Helper function to select meals based on target nutrients
+# Helper functions
 def select_meals(menu_df, target):
     selected_items = pd.DataFrame(columns=menu_df.columns)
-    nutrients = {"Calories": 0, "Protein (g)": 0, "Carbs (g)": 0, "Fat (g)": 0}
-    while any(nutrients[nutrient] < target[nutrient] for nutrient in target):
+    nutrients = {k: 0 for k in target}
+    while any(nutrients[n] < target[n] for n in target):
         item = menu_df.sample(1)
         selected_items = pd.concat([selected_items, item])
-        for nutrient in nutrients:
-            nutrients[nutrient] += item[nutrient].values[0]
+        for n in target:
+            nutrients[n] += item[n].values[0]
     return selected_items
 
 def calculate_totals(selected_items):
-    totals = selected_items[["Calories", "Protein (g)", "Carbs (g)", "Fat (g)"]].sum().to_dict()
-    return totals
+    return selected_items[["Calories", "Protein (g)", "Carbs (g)", "Fat (g)"]].sum().to_dict()
 
 def get_target_macros(goal):
     targets = {
@@ -150,7 +141,7 @@ def get_target_macros(goal):
     }
     return targets.get(goal, {"Calories": 2000, "Protein (g)": 100, "Carbs (g)": 200, "Fat (g)": 60})
 
-# Flow Control
+# Flow control
 if "step" not in st.session_state:
     st.session_state["step"] = 1
 
