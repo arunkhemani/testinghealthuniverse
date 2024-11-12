@@ -1,5 +1,4 @@
 import streamlit as st
-import matplotlib.pyplot as plt
 
 # Step 1: Define food items and their macros per serving
 food_items = {
@@ -39,16 +38,9 @@ st.write(f"Protein: {total_macros['protein']}g")
 st.write(f"Carbohydrates: {total_macros['carbs']}g")
 st.write(f"Fat: {total_macros['fat']}g")
 
-# Step 4: Generate a pie chart
-labels = list(total_macros.keys())
-values = list(total_macros.values())
-
-fig, ax = plt.subplots()
-ax.pie(values, labels=labels, autopct='%1.1f%%')
-ax.set_title("Macro Breakdown")
-
-# Display chart
-st.pyplot(fig)
+# Step 4: Generate a bar chart for macros
+st.write("### Macro Breakdown Chart")
+st.bar_chart([total_macros])
 
 # Step 5: Provide recommendations
 st.write("### Recommendations for a Balanced Meal")
@@ -60,11 +52,4 @@ recommendations = []
 if total_macros['protein'] < protein_target:
     recommendations.append("Consider adding more protein-rich foods like chicken or tofu.")
 if total_macros['carbs'] < carb_target:
-    recommendations.append("Consider adding more carbohydrates like rice or sweet potatoes.")
-if total_macros['fat'] < fat_target:
-    recommendations.append("Consider adding more healthy fats like almonds or salmon.")
-
-if recommendations:
-    st.write("\n".join(recommendations))
-else:
-    st.write("Great job! You've achieved a balanced macro intake for today.")
+    recommendations.append("Cons
