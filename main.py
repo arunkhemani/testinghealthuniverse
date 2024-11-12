@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import pdfkit
 
 # Step 1: Display "How cooked is your nutrition? College Edition" and Bentley menu
 def step_1_select_college():
@@ -14,8 +13,8 @@ def step_1_select_college():
         'Food Item': [
             'Egg & Cheese Bagel With Sausage', 'Scrambled Egg & Cheese On Bagel', 'Scrambled Eggs', 
             'Oven Roasted Greek Potatoes', 'Grilled Kielbasa', 'French Waffle', 'Everything Omelet',
-            'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash', 
-            # (Include more items for lunch and dinner as provided in the description)
+            'Grits', 'Oatmeal', 'Griddled Ham Steak', 'Potato & Kale Hash'
+            # Add more items for lunch and dinner
         ],
         'Calories': [500, 300, 190, 100, 190, 180, 290, 90, 110, 70, 130],
         'Protein (g)': [22, 18, 13, 2, 9, 4, 16, 2, 5, 9, 4],  # Estimated values
@@ -71,9 +70,10 @@ def step_3_personalized_meal_plan():
 
     # Progress bars based on user goals
     target = get_target_macros(st.session_state["user_data"]["goal"])
-    for nutrient in ["Calories", "Protein", "Carbs", "Fat"]:
-        st.write(f"{nutrient}: {daily_totals[nutrient]} / {target[nutrient]}")
-        st.progress(min(daily_totals[nutrient] / target[nutrient], 1.0))
+    for nutrient in ["Calories", "Protein (g)", "Carbs (g)", "Fat (g)"]:
+        if nutrient in daily_totals and nutrient in target:
+            st.write(f"{nutrient}: {daily_totals[nutrient]} / {target[nutrient]}")
+            st.progress(min(daily_totals[nutrient] / target[nutrient], 1.0))
 
     # PDF Export
     if st.button("Export to PDF"):
@@ -86,6 +86,7 @@ def step_3_personalized_meal_plan():
 # Helper Functions
 def calculate_totals(selected_items):
     menu_df = st.session_state["menu_df"]
+    # Initialize totals with all required keys, even if they will stay at 0
     totals = {"Calories": 0, "Protein (g)": 0, "Carbs (g)": 0, "Fat (g)": 0}
     for item in selected_items:
         food_data = menu_df[menu_df['Food Item'] == item].iloc[0]
@@ -96,16 +97,17 @@ def calculate_totals(selected_items):
     return totals
 
 def get_target_macros(goal):
+    # Define macro targets for various goals
     targets = {
-        "Gain Weight": {"Calories": 2800, "Protein": 120, "Carbs": 300, "Fat": 80},
-        "Lose Weight": {"Calories": 1800, "Protein": 100, "Carbs": 150, "Fat": 50},
-        "Gain Muscle": {"Calories": 2500, "Protein": 140, "Carbs": 250, "Fat": 70},
-        "Lose Muscle": {"Calories": 2000, "Protein": 80, "Carbs": 200, "Fat": 60},
-        "Tone": {"Calories": 2200, "Protein": 100, "Carbs": 200, "Fat": 60},
-        "More Vitamins": {"Calories": 2000, "Protein": 80, "Carbs": 180, "Fat": 55},
-        "Healthier Gut": {"Calories": 2100, "Protein": 90, "Carbs": 220, "Fat": 65}
+        "Gain Weight": {"Calories": 2800, "Protein (g)": 120, "Carbs (g)": 300, "Fat (g)": 80},
+        "Lose Weight": {"Calories": 1800, "Protein (g)": 100, "Carbs (g)": 150, "Fat (g)": 50},
+        "Gain Muscle": {"Calories": 2500, "Protein (g)": 140, "Carbs (g)": 250, "Fat (g)": 70},
+        "Lose Muscle": {"Calories": 2000, "Protein (g)": 80, "Carbs (g)": 200, "Fat (g)": 60},
+        "Tone": {"Calories": 2200, "Protein (g)": 100, "Carbs (g)": 200, "Fat (g)": 60},
+        "More Vitamins": {"Calories": 2000, "Protein (g)": 80, "Carbs (g)": 180, "Fat (g)": 55},
+        "Healthier Gut": {"Calories": 2100, "Protein (g)": 90, "Carbs (g)": 220, "Fat (g)": 65}
     }
-    return targets.get(goal, {"Calories": 2000, "Protein": 100, "Carbs": 200, "Fat": 60})
+    return targets.get(goal, {"Calories": 2000, "Protein (g)": 100, "Carbs (g)": 200, "Fat (g)": 60})
 
 def export_pdf(user_data, daily_totals):
     # Prepare HTML content for PDF
@@ -137,4 +139,4 @@ if st.session_state["step"] == 1:
 elif st.session_state["step"] == 2:
     step_2_personal_details()
 elif st.session_state["step"] == 3:
-    step_3_personalized_meal_plan()
+    step_
