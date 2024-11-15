@@ -271,18 +271,12 @@ st.sidebar.metric("Recommended Daily Calories", f"{daily_caloric_needs} kcal")
 st.sidebar.header("Select Day and Meal Type")
 selected_day = st.sidebar.selectbox("Select a Day:", list(dining_hall_data.keys()))
 selected_meal_type = st.sidebar.selectbox("Select a Meal Type:", ["Breakfast", "Lunch", "Dinner"])
+selected_restriction = st.sidebar.selectbox("Select Dietary Restriction:", ["All", "vegan", "vegetarian", "kosher", "halal", "pescetarian"])
 
 # Retrieve menu for selected day and meal type
 menu_df = dining_hall_data[selected_day][selected_meal_type]
 st.subheader(f"{selected_day} {selected_meal_type} Menu")
 st.dataframe(menu_df)
-
-# New filter for dietary restrictions
-st.sidebar.header("Select Dietary Restrictions")
-selected_restriction = st.sidebar.selectbox("Select Dietary Restriction:", ["All", "vegan", "vegetarian", "kosher", "halal", "pescetarian"])
-
-# Retrieve menu for selected day and meal type, filtered by dietary restriction
-menu_df = dining_hall_data[selected_day][selected_meal_type]
 
 # Apply dietary restriction filter if selected
 if selected_restriction != "All":
