@@ -263,14 +263,6 @@ if selected_meals:
     st.metric("Total Carbs", f"{totals['Carbs (g)']} g")
     st.metric("Total Fiber", f"{totals['Fiber (g)']} g")
 
-    recommendations = recommend_foods(totals, menu_df)
-
-# Display the recommendations
-st.write("### Recommended Foods to Balance Your Plan")
-for nutrient, items in recommendations.items():
-    st.write(f"**{nutrient}**")
-    st.table(items[["Meal", "Calories", "Total Fat (g)", "Protein (g)", "Carbs (g)", "Fiber (g)"]])
-
     # Nutritional Breakdown Pie Chart
     st.subheader("Nutritional Breakdown")
     pie_chart = plot_pie_chart(
