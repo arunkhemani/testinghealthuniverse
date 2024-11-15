@@ -277,6 +277,21 @@ menu_df = dining_hall_data[selected_day][selected_meal_type]
 st.subheader(f"{selected_day} {selected_meal_type} Menu")
 st.dataframe(menu_df)
 
+# New filter for dietary restrictions
+st.sidebar.header("Select Dietary Restrictions")
+selected_restriction = st.sidebar.selectbox("Select Dietary Restriction:", ["All", "vegan", "vegetarian", "kosher", "halal", "pescetarian"])
+
+# Retrieve menu for selected day and meal type, filtered by dietary restriction
+menu_df = dining_hall_data[selected_day][selected_meal_type]
+
+# Apply dietary restriction filter if selected
+if selected_restriction != "All":
+    menu_df = menu_df[menu_df["Dietary Restrictions"].str.contains(selected_restriction, case=False, na=False)]
+
+st.subheader(f"{selected_day} {selected_meal_type} Menu - {selected_restriction.capitalize() if selected_restriction != 'All' else 'All'}")
+st.dataframe(menu_df)
+
+
 # Allow users to select meals and portions
 selected_meals = st.multiselect(
     "Select meals to add to your plan:",
