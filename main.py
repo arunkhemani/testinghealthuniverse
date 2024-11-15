@@ -282,9 +282,6 @@ st.dataframe(menu_df)
 if selected_restriction != "All":
     menu_df = menu_df[menu_df["Dietary Restrictions"].str.contains(selected_restriction, case=False, na=False)]
 
-st.subheader(f"{selected_day} {selected_meal_type} Menu - {selected_restriction.capitalize() if selected_restriction != 'All' else 'All'}")
-st.dataframe(menu_df)
-
 
 # Allow users to select meals and portions
 selected_meals = st.multiselect(
