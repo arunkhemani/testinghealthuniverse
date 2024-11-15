@@ -262,22 +262,6 @@ if selected_meals:
     st.metric("Total Protein", f"{totals['Protein (g)']} g")
     st.metric("Total Carbs", f"{totals['Carbs (g)']} g")
     st.metric("Total Fiber", f"{totals['Fiber (g)']} g")
-
-    # Nutritional Breakdown Pie Chart
-    st.subheader("Nutritional Breakdown")
-    pie_chart = plot_pie_chart(
-    data=[totals["Carbs (g)"], totals["Protein (g)"], totals["Total Fat (g)"]],
-    labels=["Carbs (g)", "Protein (g)", "Total Fat (g)"],
-    title="Nutritional Distribution")
-    st.pyplot(pie_chart)
-
-    # Recommendations
-    if totals["Calories"] > daily_caloric_needs:
-        st.error("Your meal plan exceeds your daily caloric needs. Consider reducing high-calorie items.")
-    elif totals["Calories"] < daily_caloric_needs * 0.8:
-        st.warning("Your meal plan is too low in calories. Consider adding more nutrient-dense meals.")
-    else:
-        st.success("Your meal plan is within your recommended caloric range. Keep it up!")
     
     # Dietitian Section
     st.markdown("---")
