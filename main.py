@@ -283,9 +283,21 @@ menu_df = dining_hall_data[selected_day][selected_meal_type]
 if selected_restriction != "All":
     menu_df = menu_df[menu_df["Dietary Restrictions"].str.contains(selected_restriction, case=False, na=False)]
 
-# Display the filtered or unfiltered menu with horizontal scrolling enabled
-st.subheader(f"{selected_day} {selected_meal_type} Menu - {selected_restriction.capitalize() if selected_restriction != 'All' else 'All'}")
-st.dataframe(menu_df, use_container_width=True)
+# Add custom CSS for horizontal scrolling
+st.markdown("""
+    <style>
+    .scrolling-table {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Display the table with the scrollable class applied
+st.markdown(
+    menu_df.to_html(classes="scrolling-table"),
+    unsafe_allow_html=True
+)
 
 
 # Allow users to select meals and portions
