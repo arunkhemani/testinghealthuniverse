@@ -328,8 +328,8 @@ if selected_meals:
     else:
         st.success("Your meal plan is within your recommended caloric range. Keep it up!")
 
-# Add custom CSS to control table width and enable horizontal scrolling
-st.markdown("""
+    # Add custom CSS to control table width and enable horizontal scrolling
+    st.markdown("""
     <style>
     .scrolling-table-container {
         width: 100%;
@@ -342,13 +342,13 @@ st.markdown("""
         width: 100%; /* Extend to the full width of the container */
     }
     </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-# Display the table with the scrolling class applied inside a fixed-height div
-st.markdown(
+    # Display the table with the scrolling class applied inside a fixed-height div
+    st.markdown(
     f'<div class="scrolling-table-container">{menu_df.to_html(classes="scrolling-table")}</div>',
     unsafe_allow_html=True
-)
+    )
     
     # Dietitian Section
     st.markdown("---")
