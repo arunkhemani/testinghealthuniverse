@@ -334,7 +334,7 @@ if selected_meals:
     fat_grams_needed = round(fat_calories_needed / 9)
     protein_calories_needed = protein_grams_needed * 4
     carbs_calories_needed = daily_caloric_needs - (protein_calories_needed + fat_calories_needed)
-    carbs_grams_needed = round(carbs_calories_needed / 5)
+    carbs_grams_needed = round(carbs_calories_needed / 6)
 
     # Generate recommendations based on totals
     if totals["Protein (g)"] < protein_grams_needed / 3:
