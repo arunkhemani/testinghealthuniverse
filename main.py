@@ -283,15 +283,6 @@ menu_df = dining_hall_data[selected_day][selected_meal_type]
 if selected_restriction != "All":
     menu_df = menu_df[menu_df["Dietary Restrictions"].str.contains(selected_restriction, case=False, na=False)]
 
-# Display the filtered or unfiltered menu with horizontal scrolling using st.table
-st.subheader(f"{selected_day} {selected_meal_type} Menu - {selected_restriction.capitalize() if selected_restriction != 'All' else 'All'}")
-
-# Converting the dataframe to HTML format with scrolling enabled
-st.write(
-    menu_df.to_html(justify="center", classes="scrolling-table", max_cols=None, max_rows=None),
-    unsafe_allow_html=True
-)
-
 # Allow users to select meals and portions
 selected_meals = st.multiselect(
     "Select meals to add to your plan:",
@@ -336,6 +327,28 @@ if selected_meals:
         st.warning("Your meal plan is too low in calories. Consider adding more nutrient-dense meals.")
     else:
         st.success("Your meal plan is within your recommended caloric range. Keep it up!")
+
+# Add custom CSS to control table width and enable horizontal scrolling
+st.markdown("""
+    <style>
+    .scrolling-table-container {
+        width: 100%;
+        max-height: 300px; /* Set a fixed height for the table container */
+        overflow-x: auto; /* Enable horizontal scrolling */
+        overflow-y: hidden; /* Disable vertical scrolling */
+        white-space: nowrap; /* Keep columns on one line */
+    }
+    .scrolling-table {
+        width: 100%; /* Extend to the full width of the container */
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Display the table with the scrolling class applied inside a fixed-height div
+st.markdown(
+    f'<div class="scrolling-table-container">{menu_df.to_html(classes="scrolling-table")}</div>',
+    unsafe_allow_html=True
+)
     
     # Dietitian Section
     st.markdown("---")
